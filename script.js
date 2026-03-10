@@ -24,7 +24,7 @@ for (let i = 0; i < maxFlakes; i++) {
 
 function drawSnow() {
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "rgba(255,255,255,0.3)";
+    ctx.fillStyle = "rgba(168,133,247,0.3)";
     ctx.beginPath();
 
     for (let f of snowflakes) {
@@ -50,6 +50,44 @@ function updateSnow() {
 }
 
 drawSnow();
+
+// ===== МОДАЛЬНЫЕ ОКНА =====
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Закрытие модального окна при клике вне его
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Закрытие модального окна по нажатию Escape
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+});
 
 // ===== ДОПОЛНИТЕЛЬНЫЕ СПЕЦЭФФЕКТЫ =====
 
@@ -91,18 +129,6 @@ style.textContent = `
             transform: translate(${Math.random() * 100 - 50}px, -50px) scale(0);
         }
     }
-
-    @keyframes floatingGradient {
-        0% {
-            background-position: 0% 50%;
-        }
-        50% {
-            background-position: 100% 50%;
-        }
-        100% {
-            background-position: 0% 50%;
-        }
-    }
 `;
 document.head.appendChild(style);
 
@@ -141,20 +167,42 @@ document.head.appendChild(twinkleStyle);
 
 createStars();
 
-// Светящиеся линии между элементами при наведении
-const socialLinks = document.querySelectorAll('.social-link');
-
-socialLinks.forEach((link, index) => {
-    link.addEventListener('mouseenter', () => {
-        link.style.filter = 'drop-shadow(0 0 20px rgba(168, 85, 247, 1))';
-    });
-
-    link.addEventListener('mouseleave', () => {
-        link.style.filter = 'none';
-    });
+// Эффект при скролле
+window.addEventListener('scroll', () => {
+    const scrollParticle = document.createElement('div');
+    scrollParticle.style.position = 'fixed';
+    scrollParticle.style.left = Math.random() * width + 'px';
+    scrollParticle.style.top = Math.random() * height + 'px';
+    scrollParticle.style.width = '3px';
+    scrollParticle.style.height = '3px';
+    scrollParticle.style.borderRadius = '50%';
+    scrollParticle.style.backgroundColor = '#00ffc8';
+    scrollParticle.style.pointerEvents = 'none';
+    scrollParticle.style.zIndex = '1';
+    scrollParticle.style.boxShadow = '0 0 10px #00ffc8';
+    scrollParticle.style.animation = 'scrollParticleFloat 2s ease-out forwards';
+    
+    document.body.appendChild(scrollParticle);
+    
+    setTimeout(() => scrollParticle.remove(), 2000);
 });
 
-// Дополнительный эффект - волны от клика
+const scrollParticleStyle = document.createElement('style');
+scrollParticleStyle.textContent = `
+    @keyframes scrollParticleFloat {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-100px);
+        }
+    }
+`;
+document.head.appendChild(scrollParticleStyle);
+
+// Эффект волны от клика
 document.addEventListener('click', (e) => {
     createClickWave(e.clientX, e.clientY);
 });
@@ -229,52 +277,3 @@ function createCursorAura() {
 }
 
 setInterval(createCursorAura, 50);
-
-// Эффект при скролле
-window.addEventListener('scroll', () => {
-    const scrollParticle = document.createElement('div');
-    scrollParticle.style.position = 'fixed';
-    scrollParticle.style.left = Math.random() * width + 'px';
-    scrollParticle.style.top = Math.random() * height + 'px';
-    scrollParticle.style.width = '3px';
-    scrollParticle.style.height = '3px';
-    scrollParticle.style.borderRadius = '50%';
-    scrollParticle.style.backgroundColor = '#00ffc8';
-    scrollParticle.style.pointerEvents = 'none';
-    scrollParticle.style.zIndex = '1';
-    scrollParticle.style.boxShadow = '0 0 10px #00ffc8';
-    scrollParticle.style.animation = 'scrollParticleFloat 2s ease-out forwards';
-    
-    document.body.appendChild(scrollParticle);
-    
-    setTimeout(() => scrollParticle.remove(), 2000);
-});
-
-const scrollParticleStyle = document.createElement('style');
-scrollParticleStyle.textContent = `
-    @keyframes scrollParticleFloat {
-        0% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        100% {
-            opacity: 0;
-            transform: translateY(-100px);
-        }
-    }
-`;
-document.head.appendChild(scrollParticleStyle);
-
-// Эффект для кнопок в футере
-const legalLinks = document.querySelectorAll('.legal-link');
-
-legalLinks.forEach((link) => {
-    link.addEventListener('mousemove', (e) => {
-        const rect = link.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        link.style.setProperty('--x', x + 'px');
-        link.style.setProperty('--y', y + 'px');
-    });
-});
