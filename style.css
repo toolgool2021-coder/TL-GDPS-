@@ -8,7 +8,7 @@ html, body {
     width: 100%;
     height: 100%;
     background: #0a0a0a;
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     color: white;
     overflow-x: hidden;
 }
@@ -19,78 +19,75 @@ html, body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding: 40px 20px;
 }
 
 .profile-section {
     text-align: center;
+    animation: fadeInDown 0.8s ease-out;
 }
 
-/* ===== AVATAR ===== */
-.avatar-container {
-    margin-bottom: 15px;
+/* ===== GDPS ИЗОБРАЖЕНИЕ ===== */
+.gdps-image-container {
+    margin-bottom: 25px;
 }
 
-.avatar-wrapper {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
+.gdps-image-wrapper {
+    width: 400px;
+    height: 300px;
+    border-radius: 15px;
     overflow: hidden;
     margin: 0 auto;
     position: relative;
-}
-
-.avatar-wrapper::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
     border: 3px solid #a855f7;
-    pointer-events: none;
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.6), inset 0 0 30px rgba(168, 85, 247, 0.2);
+    transition: all 0.3s ease;
 }
 
-.avatar {
+.gdps-image-wrapper:hover {
+    box-shadow: 0 0 50px rgba(168, 85, 247, 1), inset 0 0 40px rgba(168, 85, 247, 0.4);
+    transform: translateY(-10px);
+}
+
+.gdps-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
-}
-
-/* ===== USERNAME ===== */
-.username {
-    font-size: 26px;
-    margin-bottom: 15px;
-}
-
-/* ===== SOCIALS ===== */
-.social-links {
-    display: grid;
-    grid-template-columns: repeat(5, 50px);
-    gap: 15px;
-    justify-content: center;
-    padding: 10px;
-}
-
-.social-link {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid #a855f7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transition: transform 0.3s ease;
 }
 
-.social-link:hover {
-    transform: scale(1.1);
+.gdps-image-wrapper:hover .gdps-image {
+    transform: scale(1.05);
 }
 
-.social-link img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+.gdps-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0) 0%, rgba(0, 255, 200, 0.1) 100%);
+    pointer-events: none;
+}
+
+/* ===== ЗАГОЛОВОК И ОПИСАНИЕ ===== */
+.server-title {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #a855f7 0%, #00ffc8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+    letter-spacing: 3px;
+    font-weight: bold;
+    text-transform: uppercase;
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+.server-description {
+    font-size: 1.3rem;
+    color: #a855f7;
+    text-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+    letter-spacing: 1px;
 }
 
 /* ===== SNOW ===== */
@@ -106,9 +103,9 @@ html, body {
 
 /* ===== ФУТЕР ===== */
 footer {
-    background: rgba(10, 10, 10, 0.9);
+    background: rgba(10, 10, 10, 0.95);
     backdrop-filter: blur(10px);
-    border-top: 2px solid rgba(168, 85, 247, 0.5);
+    border-top: 2px solid rgba(168, 85, 247, 0.8);
     padding: 50px 20px;
     margin-top: 100px;
     position: relative;
@@ -255,8 +252,159 @@ footer {
     z-index: 10;
 }
 
+/* ===== МОДАЛЬНЫЕ ОКНА ===== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    animation: fadeIn 0.3s ease-out;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 10px;
+    width: 85%;
+    max-width: 650px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.5);
+    animation: slideIn 0.3s ease-out;
+    border: 2px solid #a855f7;
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: rgba(168, 85, 247, 0.1);
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #a855f7;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #00ffff;
+}
+
+.close-btn {
+    color: #a855f7;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.close-btn:hover {
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+.modal h2 {
+    color: #a855f7;
+    margin-bottom: 15px;
+    margin-top: 20px;
+    clear: both;
+    text-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+}
+
+.modal p {
+    line-height: 1.8;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.modal a {
+    color: #00ffff;
+    text-decoration: none;
+    transition: all 0.2s;
+    text-shadow: 0 0 10px rgba(0, 255, 200, 0.5);
+}
+
+.modal a:hover {
+    color: #a855f7;
+    text-shadow: 0 0 15px #a855f7;
+    text-decoration: underline;
+}
+
+/* ===== АНИМАЦИИ ===== */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.5));
+    }
+    50% {
+        filter: drop-shadow(0 0 40px rgba(0, 255, 200, 0.8));
+    }
+}
+
+@keyframes particleFloat {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(${Math.random() * 100 - 50}px, -50px) scale(0);
+    }
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
+    .gdps-image-wrapper {
+        width: 300px;
+        height: 225px;
+    }
+
+    .server-title {
+        font-size: 2.5rem;
+    }
+
+    .server-description {
+        font-size: 1.1rem;
+    }
+
     .legal-link {
         font-size: 12px;
         padding: 10px 20px;
@@ -271,4 +419,41 @@ footer {
     footer {
         padding: 30px 15px;
     }
+
+    .modal-content {
+        width: 90%;
+        margin: 15% auto;
+        padding: 20px;
+    }
 }
+
+@media (max-width: 480px) {
+    .gdps-image-wrapper {
+        width: 100%;
+        max-width: 280px;
+        height: 210px;
+    }
+
+    .server-title {
+        font-size: 2rem;
+    }
+
+    .server-description {
+        font-size: 1rem;
+    }
+
+    .legal-links {
+        gap: 10px;
+    }
+
+    .legal-link {
+        font-size: 11px;
+        padding: 8px 16px;
+    }
+
+    .social-link-footer {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+    }
